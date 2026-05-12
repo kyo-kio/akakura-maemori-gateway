@@ -86,31 +86,55 @@ function SelectPage() {
             href="https://town.mogami.lg.jp/"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full border border-white/60 bg-white/10 backdrop-blur-sm px-5 py-2 text-xs tracking-[0.25em] uppercase hover:bg-white hover:text-black transition-colors"
+            aria-label={lang === "JP" ? "最上町公式サイトを新しいタブで開く" : "Open Mogami town official site in a new tab"}
+            className="group inline-flex items-center gap-2 text-[11px] tracking-[0.3em] uppercase text-white/90 hover:text-white focus-visible:text-white outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40 rounded-sm px-1 py-1 transition-colors"
           >
-            {t.citySite}
+            <span className="relative">
+              {t.citySite}
+              <span className="absolute -bottom-1 left-0 h-px w-full bg-white/40 group-hover:bg-white transition-colors" />
+            </span>
+            <span aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
           </a>
 
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label="Switch language"
-            className="text-[11px] tracking-[0.35em] uppercase"
+          <div
+            role="group"
+            aria-label={lang === "JP" ? "言語切り替え" : "Language selector"}
+            className="inline-flex items-center gap-1 rounded-full border border-white/30 bg-white/5 backdrop-blur-sm p-1"
           >
-            <span className={lang === "JP" ? "text-white" : "text-white/40"}>
+            <button
+              type="button"
+              onClick={() => setLang("JP")}
+              aria-pressed={lang === "JP"}
+              aria-label="日本語に切り替え"
+              className={`px-3 py-1 text-[11px] tracking-[0.25em] uppercase rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/80 transition-colors ${
+                lang === "JP" ? "bg-white text-black" : "text-white/70 hover:text-white"
+              }`}
+            >
               JP
-            </span>
-            <span className="mx-1 text-white/40">/</span>
-            <span className={lang === "EN" ? "text-white" : "text-white/40"}>
+            </button>
+            <button
+              type="button"
+              onClick={() => setLang("EN")}
+              aria-pressed={lang === "EN"}
+              aria-label="Switch to English"
+              className={`px-3 py-1 text-[11px] tracking-[0.25em] uppercase rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/80 transition-colors ${
+                lang === "EN" ? "bg-white text-black" : "text-white/70 hover:text-white"
+              }`}
+            >
               EN
-            </span>
-          </button>
+            </button>
+          </div>
 
           <a
             href="#contact"
-            className="rounded-full border border-white/60 bg-white/10 backdrop-blur-sm px-5 py-2 text-xs tracking-[0.25em] uppercase hover:bg-white hover:text-black transition-colors"
+            aria-label={lang === "JP" ? "お問い合わせフォームへ移動" : "Jump to contact form"}
+            className="group inline-flex items-center gap-2 text-[11px] tracking-[0.3em] uppercase text-white/90 hover:text-white focus-visible:text-white outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40 rounded-sm px-1 py-1 transition-colors"
           >
-            {t.contact}
+            <span className="relative">
+              {t.contact}
+              <span className="absolute -bottom-1 left-0 h-px w-full bg-white/40 group-hover:bg-white transition-colors" />
+            </span>
+            <span aria-hidden className="transition-transform group-hover:translate-y-0.5">↓</span>
           </a>
         </header>
 
