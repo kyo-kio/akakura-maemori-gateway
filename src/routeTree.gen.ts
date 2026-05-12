@@ -9,18 +9,48 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SlopeRouteImport } from './routes/slope'
+import { Route as PriceRouteImport } from './routes/price'
+import { Route as NewsRouteImport } from './routes/news'
 import { Route as MaemoriRouteImport } from './routes/maemori'
+import { Route as FoodsRouteImport } from './routes/foods'
 import { Route as AkakuraRouteImport } from './routes/akakura'
+import { Route as AccessRouteImport } from './routes/access'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SlopeRoute = SlopeRouteImport.update({
+  id: '/slope',
+  path: '/slope',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PriceRoute = PriceRouteImport.update({
+  id: '/price',
+  path: '/price',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsRoute = NewsRouteImport.update({
+  id: '/news',
+  path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MaemoriRoute = MaemoriRouteImport.update({
   id: '/maemori',
   path: '/maemori',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FoodsRoute = FoodsRouteImport.update({
+  id: '/foods',
+  path: '/foods',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AkakuraRoute = AkakuraRouteImport.update({
   id: '/akakura',
   path: '/akakura',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccessRoute = AccessRouteImport.update({
+  id: '/access',
+  path: '/access',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,36 +61,102 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/access': typeof AccessRoute
   '/akakura': typeof AkakuraRoute
+  '/foods': typeof FoodsRoute
   '/maemori': typeof MaemoriRoute
+  '/news': typeof NewsRoute
+  '/price': typeof PriceRoute
+  '/slope': typeof SlopeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/access': typeof AccessRoute
   '/akakura': typeof AkakuraRoute
+  '/foods': typeof FoodsRoute
   '/maemori': typeof MaemoriRoute
+  '/news': typeof NewsRoute
+  '/price': typeof PriceRoute
+  '/slope': typeof SlopeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/access': typeof AccessRoute
   '/akakura': typeof AkakuraRoute
+  '/foods': typeof FoodsRoute
   '/maemori': typeof MaemoriRoute
+  '/news': typeof NewsRoute
+  '/price': typeof PriceRoute
+  '/slope': typeof SlopeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/akakura' | '/maemori'
+  fullPaths:
+    | '/'
+    | '/access'
+    | '/akakura'
+    | '/foods'
+    | '/maemori'
+    | '/news'
+    | '/price'
+    | '/slope'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/akakura' | '/maemori'
-  id: '__root__' | '/' | '/akakura' | '/maemori'
+  to:
+    | '/'
+    | '/access'
+    | '/akakura'
+    | '/foods'
+    | '/maemori'
+    | '/news'
+    | '/price'
+    | '/slope'
+  id:
+    | '__root__'
+    | '/'
+    | '/access'
+    | '/akakura'
+    | '/foods'
+    | '/maemori'
+    | '/news'
+    | '/price'
+    | '/slope'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccessRoute: typeof AccessRoute
   AkakuraRoute: typeof AkakuraRoute
+  FoodsRoute: typeof FoodsRoute
   MaemoriRoute: typeof MaemoriRoute
+  NewsRoute: typeof NewsRoute
+  PriceRoute: typeof PriceRoute
+  SlopeRoute: typeof SlopeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/slope': {
+      id: '/slope'
+      path: '/slope'
+      fullPath: '/slope'
+      preLoaderRoute: typeof SlopeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/price': {
+      id: '/price'
+      path: '/price'
+      fullPath: '/price'
+      preLoaderRoute: typeof PriceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news': {
+      id: '/news'
+      path: '/news'
+      fullPath: '/news'
+      preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/maemori': {
       id: '/maemori'
       path: '/maemori'
@@ -68,11 +164,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MaemoriRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/foods': {
+      id: '/foods'
+      path: '/foods'
+      fullPath: '/foods'
+      preLoaderRoute: typeof FoodsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/akakura': {
       id: '/akakura'
       path: '/akakura'
       fullPath: '/akakura'
       preLoaderRoute: typeof AkakuraRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/access': {
+      id: '/access'
+      path: '/access'
+      fullPath: '/access'
+      preLoaderRoute: typeof AccessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -87,9 +197,24 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccessRoute: AccessRoute,
   AkakuraRoute: AkakuraRoute,
+  FoodsRoute: FoodsRoute,
   MaemoriRoute: MaemoriRoute,
+  NewsRoute: NewsRoute,
+  PriceRoute: PriceRoute,
+  SlopeRoute: SlopeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
