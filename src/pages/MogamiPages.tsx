@@ -163,7 +163,7 @@ export function SelectPage() {
           </span>
         </div>
 
-        <div className="absolute bottom-16 md:bottom-20 left-0 right-0 z-20 flex flex-col items-center px-6">
+        <div className="absolute top-1/2 left-0 right-0 z-20 flex flex-col items-center px-6 -translate-y-1/2">
           <p className="font-serif text-2xl md:text-4xl text-center leading-snug mb-8">
             {t.tagline}
           </p>
