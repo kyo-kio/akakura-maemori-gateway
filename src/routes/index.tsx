@@ -64,7 +64,7 @@ const copy = {
 function SelectPage() {
   const [lang, setLang] = useState<Lang>("JP");
   const t = copy[lang];
-  const toggle = () => setLang((l) => (l === "JP" ? "EN" : "JP"));
+  
 
   return (
     <main className="relative w-full bg-black text-white font-sans">
