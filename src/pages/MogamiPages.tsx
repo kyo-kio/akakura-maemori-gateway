@@ -68,11 +68,11 @@ const MAEMORI_NAV = [
 ];
 
 const AKAKURA_NAV = [
-  { label: "Slopes.", href: "#slopes" },
-  { label: "Onsen.", href: "#onsen" },
-  { label: "Access.", href: "#access" },
-  { label: "News", href: "#news" },
-  { label: "Shop", href: "#shop" },
+  { label: "News", to: "/news" as const },
+  { label: "Slopes", to: "/slope" as const },
+  { label: "Price", to: "/price" as const },
+  { label: "Foods", to: "/foods" as const },
+  { label: "Access", to: "/access" as const },
 ];
 
 /* ============================================================
@@ -442,9 +442,9 @@ export function AkakuraPage() {
         </Link>
         <nav className="hidden md:flex items-center gap-10 text-sm">
           {AKAKURA_NAV.map((n) => (
-            <a key={n.label} href={n.href} className="text-white/80 hover:text-white transition-colors">
+            <Link key={n.label} to={n.to} className="text-white/80 hover:text-white transition-colors">
               {n.label}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="flex items-center gap-4 text-xs tracking-widest text-white/70">
@@ -488,19 +488,19 @@ export function AkakuraPage() {
 
         <div className="hidden lg:block absolute left-12 bottom-32 z-10">
           <ul className="space-y-3 text-[10px] tracking-[0.4em] uppercase text-white/60">
-            <li className="hover:text-white cursor-pointer">— Snow Report</li>
-            <li className="hover:text-white cursor-pointer">— Lift Tickets</li>
-            <li className="hover:text-white cursor-pointer">— Ski School</li>
-            <li className="hover:text-white cursor-pointer">— Rental</li>
+            <li><Link to="/news" className="hover:text-white">— Snow Report</Link></li>
+            <li><Link to="/price" className="hover:text-white">— Lift Tickets</Link></li>
+            <li><Link to="/slope" className="hover:text-white">— Courses</Link></li>
+            <li><Link to="/foods" className="hover:text-white">— Restaurants</Link></li>
           </ul>
         </div>
 
-        <a
-          href="#tickets"
+        <Link
+          to="/price"
           className="hidden md:inline-flex absolute bottom-32 right-12 z-10 items-center gap-2 rounded-full border border-white/40 px-6 py-3 text-xs tracking-widest hover:bg-white hover:text-black transition-colors"
         >
           Book a lift pass →
-        </a>
+        </Link>
       </section>
 
       <section
