@@ -201,6 +201,7 @@ function SelectPage() {
 
           <form
             className="space-y-6"
+            aria-label={lang === "JP" ? "お問い合わせフォーム" : "Contact form"}
             onSubmit={(e) => {
               e.preventDefault();
               alert(lang === "JP" ? "送信しました（デモ）" : "Sent (demo)");
@@ -214,7 +215,9 @@ function SelectPage() {
                 <input
                   type="text"
                   required
-                  className="mt-2 w-full bg-transparent border-b border-white/30 focus:border-white outline-none py-2 text-white"
+                  autoComplete="name"
+                  aria-required="true"
+                  className="mt-2 w-full bg-transparent border-b border-white/30 focus:border-white outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-sm py-2 text-white"
                 />
               </label>
               <label className="block">
@@ -224,7 +227,9 @@ function SelectPage() {
                 <input
                   type="email"
                   required
-                  className="mt-2 w-full bg-transparent border-b border-white/30 focus:border-white outline-none py-2 text-white"
+                  autoComplete="email"
+                  aria-required="true"
+                  className="mt-2 w-full bg-transparent border-b border-white/30 focus:border-white outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-sm py-2 text-white"
                 />
               </label>
             </div>
@@ -235,12 +240,14 @@ function SelectPage() {
               <textarea
                 required
                 rows={5}
-                className="mt-2 w-full bg-transparent border-b border-white/30 focus:border-white outline-none py-2 text-white resize-none"
+                aria-required="true"
+                className="mt-2 w-full bg-transparent border-b border-white/30 focus:border-white outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-sm py-2 text-white resize-none"
               />
             </label>
             <button
               type="submit"
-              className="inline-flex items-center gap-3 border border-white/60 px-8 py-3 text-xs tracking-[0.3em] uppercase hover:bg-white hover:text-black transition-colors"
+              aria-label={lang === "JP" ? "お問い合わせを送信する" : "Submit contact form"}
+              className="inline-flex items-center gap-3 border border-white/60 px-8 py-3 text-xs tracking-[0.3em] uppercase hover:bg-white hover:text-black transition-colors outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0c0d0c]"
             >
               {t.send} <span aria-hidden>→</span>
             </button>
