@@ -163,13 +163,15 @@ function SelectPage() {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-xl">
             <Link
               to="/maemori"
-              className="flex-1 text-center bg-[#3a5a3a] hover:bg-[#4a6f4a] border border-[#3a5a3a] px-6 py-3 text-sm tracking-[0.2em] uppercase transition-colors"
+              aria-label={lang === "JP" ? "前森高原のサイトへ移動" : "Go to Maemori Kogen site"}
+              className="flex-1 text-center bg-[#3a5a3a] hover:bg-[#4a6f4a] border border-[#3a5a3a] px-6 py-3 text-sm tracking-[0.2em] uppercase transition-colors outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
             >
               {t.maemori}
             </Link>
             <Link
               to="/akakura"
-              className="flex-1 text-center bg-white/10 hover:bg-white hover:text-black backdrop-blur-sm border border-white/60 px-6 py-3 text-sm tracking-[0.2em] uppercase transition-colors"
+              aria-label={lang === "JP" ? "赤倉温泉スキー場のサイトへ移動" : "Go to Akakura Onsen Ski Resort site"}
+              className="flex-1 text-center bg-white/10 hover:bg-white hover:text-black backdrop-blur-sm border border-white/60 px-6 py-3 text-sm tracking-[0.2em] uppercase transition-colors outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
             >
               {t.akakura}
             </Link>
