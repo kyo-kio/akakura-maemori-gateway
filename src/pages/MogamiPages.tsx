@@ -87,7 +87,14 @@ export function SelectPage() {
     <main className="relative w-full bg-black text-white font-sans">
       <section className="relative h-screen w-full overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src={maemoriHero} alt="" className="h-full w-full object-cover" />
+          <video
+            src="/select-bg.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="h-full w-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/70" />
         </div>
 
@@ -168,13 +175,15 @@ export function SelectPage() {
             {t.tagline}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-xl">
-            <Link
-              to="/maemori"
+            <a
+              href="https://maemori.jp/"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label={lang === "JP" ? "前森高原のサイトへ移動" : "Go to Maemori Kogen site"}
               className="flex-1 text-center bg-[#3a5a3a] hover:bg-[#4a6f4a] border border-[#3a5a3a] px-6 py-3 text-sm tracking-[0.2em] uppercase transition-colors outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
             >
               {t.maemori}
-            </Link>
+            </a>
             <Link
               to="/akakura"
               aria-label={lang === "JP" ? "赤倉温泉スキー場のサイトへ移動" : "Go to Akakura Onsen Ski Resort site"}
