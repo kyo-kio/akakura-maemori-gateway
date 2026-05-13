@@ -3,17 +3,17 @@ import { useState, type ReactNode } from "react";
 import akakuraHero from "@/assets/akakura-hero.jpg";
 
 /* ============================================================
- *  Shared design tokens (ローカル)
- *  Primary: #003366  /  Accent: #cc0000
+ *  Shared shell — mirrors /akakura cinematic vibe
+ *  Dark base #0a0a0c, fixed hero, white serif + italic accents
  * ============================================================ */
 
 const NAV = [
-  { label: "Home", icon: "⌂", to: "/akakura" },
-  { label: "News", icon: "✦", to: "/news" },
-  { label: "Slopes", icon: "▲", to: "/slope" },
-  { label: "Price", icon: "¥", to: "/price" },
-  { label: "Foods", icon: "◐", to: "/foods" },
-  { label: "Access", icon: "→", to: "/access" },
+  { label: "Home", to: "/akakura" },
+  { label: "News", to: "/news" },
+  { label: "Slopes", to: "/slope" },
+  { label: "Price", to: "/price" },
+  { label: "Foods", to: "/foods" },
+  { label: "Access", to: "/access" },
 ] as const;
 
 function AkakuraShell({
@@ -29,103 +29,113 @@ function AkakuraShell({
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="min-h-screen bg-[#f7f6f2] text-[#1a1a1a] font-sans">
-      {/* Top bar */}
-      <header className="sticky top-0 z-40 bg-[#003366] text-white">
-        <div className="flex items-center justify-between px-5 md:px-10 h-14">
-          <Link to="/akakura" className="flex items-center gap-3">
-            <span className="inline-block h-2.5 w-2.5 bg-[#cc0000]" />
-            <span className="font-serif text-lg tracking-[0.2em]">AKAKURA</span>
-            <span className="hidden sm:inline text-[10px] tracking-[0.4em] text-white/60 uppercase">
-              Onsen Ski Resort
+    <div className="relative min-h-screen w-full bg-[#0a0a0c] text-white font-sans overflow-hidden">
+      {/* Fixed cinematic background */}
+      <div className="fixed inset-0 z-0">
+        <img src={akakuraHero} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/95" />
+      </div>
+
+      {/* Header */}
+      <header className="relative z-30 flex items-center justify-between px-6 md:px-12 py-6">
+        <Link to="/akakura" className="flex items-center gap-3">
+          <div className="h-6 w-6 border border-white/80 rotate-45" />
+          <span className="font-bold tracking-tight text-lg">
+            AKAKURA<span className="text-white/50">.</span>
+            <span className="ml-2 text-xs font-light text-white/60 tracking-widest hidden sm:inline">
+              Snow Resort.
             </span>
-          </Link>
-          <nav className="hidden lg:flex items-center gap-8 text-[11px] tracking-[0.3em] uppercase">
-            {NAV.map((n) => (
-              <Link
-                key={n.label}
-                to={n.to}
-                activeProps={{ className: "text-white" }}
-                className="text-white/70 hover:text-white transition-colors"
-              >
-                {n.label}
-              </Link>
-            ))}
-          </nav>
+          </span>
+        </Link>
+        <nav className="hidden lg:flex items-center gap-10 text-sm">
+          {NAV.map((n) => (
+            <Link
+              key={n.label}
+              to={n.to}
+              activeProps={{ className: "text-white" }}
+              className="text-white/70 hover:text-white transition-colors"
+            >
+              {n.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3 text-xs tracking-widest text-white/70">
+            <span>−2°C</span>
+            <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
+          </div>
           <button
             onClick={() => setOpen((v) => !v)}
-            className="lg:hidden text-xs tracking-[0.3em] uppercase border border-white/40 px-3 py-1.5"
+            className="lg:hidden text-[10px] tracking-[0.3em] uppercase border border-white/40 px-3 py-1.5 hover:bg-white hover:text-black transition-colors"
             aria-expanded={open}
           >
             {open ? "Close" : "Menu"}
           </button>
         </div>
-        <div className="h-[3px] w-full bg-[#cc0000]" />
-        {open && (
-          <div className="lg:hidden bg-[#003366] border-t border-white/10">
-            <ul className="flex flex-col">
-              {NAV.map((n) => (
-                <li key={n.label} className="border-b border-white/10">
-                  <Link
-                    to={n.to}
-                    onClick={() => setOpen(false)}
-                    className="flex items-center gap-4 px-5 py-4 text-sm tracking-[0.2em] uppercase text-white/80 hover:text-white hover:bg-white/5"
-                  >
-                    <span className="w-5 text-[#cc0000]">{n.icon}</span>
-                    {n.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </header>
 
+      {open && (
+        <div className="lg:hidden relative z-30 bg-black/80 backdrop-blur-md border-y border-white/10">
+          <ul className="flex flex-col">
+            {NAV.map((n) => (
+              <li key={n.label} className="border-b border-white/5">
+                <Link
+                  to={n.to}
+                  onClick={() => setOpen(false)}
+                  className="block px-6 py-4 text-sm tracking-[0.25em] uppercase text-white/80 hover:text-white hover:bg-white/5"
+                >
+                  {n.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {/* Page hero */}
-      <section className="border-b border-black/10 bg-white">
-        <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-24">
-          <div className="text-[10px] tracking-[0.5em] uppercase text-[#cc0000] mb-5">
-            — {eyebrow}
+      <section className="relative z-10 px-6 md:px-12 pt-12 md:pt-20 pb-20 md:pb-28">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-[10px] md:text-xs tracking-[0.6em] uppercase text-white/60 mb-6">
+            {eyebrow}
           </div>
-          <h1 className="font-serif text-4xl md:text-6xl leading-[1.1] tracking-tight text-[#003366]">
+          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight">
             {title}
           </h1>
           {lead && (
-            <p className="mt-6 max-w-2xl text-[#444] leading-loose">{lead}</p>
+            <p className="mt-8 max-w-2xl text-sm md:text-base text-white/70 leading-loose">
+              {lead}
+            </p>
           )}
         </div>
       </section>
 
-      <main>{children}</main>
+      <main className="relative z-10">{children}</main>
 
-      <footer className="bg-[#003366] text-white/70 mt-24">
-        <div className="max-w-6xl mx-auto px-6 md:px-10 py-12 grid md:grid-cols-3 gap-8 text-sm">
+      <footer className="relative z-10 bg-black/80 backdrop-blur-md border-t border-white/10 mt-24">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 py-12 grid md:grid-cols-3 gap-8 text-sm text-white/60">
           <div>
-            <div className="font-serif text-xl text-white tracking-[0.2em]">AKAKURA</div>
-            <p className="mt-3 text-xs leading-relaxed text-white/60">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-5 w-5 border border-white/80 rotate-45" />
+              <span className="font-bold tracking-tight text-white">AKAKURA<span className="text-white/50">.</span></span>
+            </div>
+            <p className="text-xs leading-relaxed">
               赤倉温泉スキー場<br />
               〒999-6101 山形県最上郡最上町<br />
               Tel. 0233-00-0000
             </p>
           </div>
           <div>
-            <div className="text-[10px] tracking-[0.4em] uppercase text-[#cc0000] mb-3">
-              Sitemap
-            </div>
+            <div className="text-[10px] tracking-[0.5em] uppercase text-white/40 mb-3">Sitemap</div>
             <ul className="space-y-1.5 text-xs">
               {NAV.map((n) => (
                 <li key={n.label}>
-                  <Link to={n.to} className="hover:text-white">
-                    {n.label}
-                  </Link>
+                  <Link to={n.to} className="hover:text-white">{n.label}</Link>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <div className="text-[10px] tracking-[0.4em] uppercase text-[#cc0000] mb-3">
-              Mogami
-            </div>
+            <div className="text-[10px] tracking-[0.5em] uppercase text-white/40 mb-3">Mogami</div>
             <ul className="space-y-1.5 text-xs">
               <li><Link to="/" className="hover:text-white">← Mogami Sanctuary</Link></li>
               <li><a href="https://maemori.jp/" target="_blank" rel="noreferrer" className="hover:text-white">前森高原 ↗</a></li>
@@ -133,8 +143,8 @@ function AkakuraShell({
             </ul>
           </div>
         </div>
-        <div className="border-t border-white/10 px-6 md:px-10 py-5 text-[10px] tracking-[0.3em] uppercase text-white/50">
-          © Akakura Onsen Ski Resort
+        <div className="border-t border-white/10 px-6 md:px-12 py-5 text-[10px] tracking-[0.4em] uppercase text-white/40">
+          © Akakura Onsen Ski Resort, Mogami, Yamagata
         </div>
       </footer>
     </div>
@@ -143,19 +153,21 @@ function AkakuraShell({
 
 function SectionHeading({ no, en, jp }: { no: string; en: string; jp: string }) {
   return (
-    <div className="flex items-end gap-6 mb-10">
-      <div className="font-serif text-5xl text-[#cc0000] leading-none">{no}</div>
-      <div>
-        <div className="text-[10px] tracking-[0.5em] uppercase text-[#888]">{en}</div>
-        <div className="font-serif text-2xl md:text-3xl text-[#003366]">{jp}</div>
+    <div className="flex items-end gap-6 mb-12">
+      <div className="font-serif text-5xl md:text-6xl text-white/90 leading-none italic font-light">
+        {no}
       </div>
-      <div className="flex-1 h-px bg-[#003366]/15 mb-3" />
+      <div>
+        <div className="text-[10px] tracking-[0.5em] uppercase text-white/50">{en}</div>
+        <div className="font-serif text-2xl md:text-3xl text-white">{jp}</div>
+      </div>
+      <div className="flex-1 h-px bg-white/15 mb-3" />
     </div>
   );
 }
 
 /* ============================================================
- *  /slope  — ゲレンデページ
+ *  /slope
  * ============================================================ */
 
 const COURSES = [
@@ -169,44 +181,40 @@ const COURSES = [
 export function SlopePage() {
   return (
     <AkakuraShell
-      eyebrow="II — Slopes"
-      title={<>9コース、<br />ひとつの山。</>}
+      eyebrow="II · Slopes"
+      title={<>9コース、<br />ひとつの <span className="italic font-light">山</span>。</>}
       lead="初級から国体公式コースまで、ひとつの山に多彩な表情。お子さま連れでも、本気で攻めたい一日でも、赤倉ならどちらも叶います。"
     >
-      <section className="max-w-6xl mx-auto px-6 md:px-10 py-20">
-        <SectionHeading no="01" en="Course Map" jp="ゲレンデマップ" />
-        <div className="relative aspect-[16/9] overflow-hidden border border-black/10">
-          <img
-            src={akakuraHero}
-            alt="赤倉温泉スキー場 ゲレンデマップ"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-          <div className="absolute bottom-4 left-4 text-white text-xs tracking-[0.3em] uppercase">
+      <section className="max-w-6xl mx-auto px-6 md:px-12 pb-20">
+        <SectionHeading no="I" en="Course Map" jp="ゲレンデマップ" />
+        <div className="relative aspect-[16/9] overflow-hidden border border-white/10">
+          <img src={akakuraHero} alt="ゲレンデマップ" className="absolute inset-0 h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+          <div className="absolute bottom-4 left-4 text-white/80 text-xs tracking-[0.3em] uppercase">
             Top — 1,020m / Base — 570m
           </div>
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 md:px-10 pb-24">
-        <SectionHeading no="02" en="Courses" jp="各コース紹介" />
-        <ul className="divide-y divide-black/10 border-y border-black/10">
+      <section className="max-w-6xl mx-auto px-6 md:px-12 pb-24">
+        <SectionHeading no="II" en="Courses" jp="各コース紹介" />
+        <ul className="divide-y divide-white/10 border-y border-white/10">
           {COURSES.map((c, i) => (
-            <li key={c.name} className="grid md:grid-cols-12 gap-6 py-8">
-              <div className="md:col-span-1 font-serif text-2xl text-[#cc0000]">
+            <li key={c.name} className="grid md:grid-cols-12 gap-6 py-8 hover:bg-white/[0.02] transition-colors px-2">
+              <div className="md:col-span-1 font-serif text-2xl text-white/60 italic">
                 {String(i + 1).padStart(2, "0")}
               </div>
               <div className="md:col-span-4">
-                <div className="text-[10px] tracking-[0.4em] uppercase text-[#888] mb-2">{c.level}</div>
-                <h3 className="font-serif text-2xl text-[#003366]">{c.name}</h3>
+                <div className="text-[10px] tracking-[0.4em] uppercase text-white/50 mb-2">{c.level}</div>
+                <h3 className="font-serif text-2xl text-white">{c.name}</h3>
               </div>
-              <div className="md:col-span-2 text-sm text-[#444]">
-                <div className="text-[10px] tracking-[0.3em] uppercase text-[#888]">距離</div>
-                <div>{c.length}</div>
-                <div className="text-[10px] tracking-[0.3em] uppercase text-[#888] mt-2">最大斜度</div>
-                <div>{c.slope}</div>
+              <div className="md:col-span-2 text-sm text-white/70">
+                <div className="text-[10px] tracking-[0.3em] uppercase text-white/40">距離</div>
+                <div className="font-serif">{c.length}</div>
+                <div className="text-[10px] tracking-[0.3em] uppercase text-white/40 mt-2">最大斜度</div>
+                <div className="font-serif">{c.slope}</div>
               </div>
-              <div className="md:col-span-5 text-sm text-[#444] leading-loose">{c.desc}</div>
+              <div className="md:col-span-5 text-sm text-white/70 leading-loose">{c.desc}</div>
             </li>
           ))}
         </ul>
@@ -216,7 +224,7 @@ export function SlopePage() {
 }
 
 /* ============================================================
- *  /price  — 料金ページ
+ *  /price
  * ============================================================ */
 
 const PRICES = [
@@ -237,30 +245,33 @@ const PROMOS = [
 export function PricePage() {
   return (
     <AkakuraShell
-      eyebrow="III — Lift Tickets"
-      title={<>料金一覧／<br />おとくなパック。</>}
+      eyebrow="III · Lift Tickets"
+      title={<>料金一覧／<br /><span className="italic font-light">おとくな</span>パック。</>}
       lead="リフト券・回数券・シーズン券のほか、温泉とセットになったお得なパックもご用意しています。"
     >
-      <section className="max-w-6xl mx-auto px-6 md:px-10 py-20">
-        <SectionHeading no="01" en="Promotion" jp="おとくなパック" />
-        <div className="grid md:grid-cols-3 gap-6">
+      <section className="max-w-6xl mx-auto px-6 md:px-12 pb-20">
+        <SectionHeading no="I" en="Promotion" jp="おとくなパック" />
+        <div className="grid md:grid-cols-3 gap-px bg-white/10 border border-white/10">
           {PROMOS.map((p) => (
-            <div key={p.title} className="border border-black/10 bg-white p-8 hover:border-[#cc0000] transition-colors">
-              <div className="text-[10px] tracking-[0.4em] uppercase text-[#cc0000] mb-3">Pack</div>
-              <h3 className="font-serif text-xl text-[#003366] mb-2">{p.title}</h3>
-              <div className="font-serif text-3xl mb-4">{p.price}</div>
-              <p className="text-sm text-[#444] leading-relaxed">{p.desc}</p>
+            <div
+              key={p.title}
+              className="bg-black/50 backdrop-blur-sm p-8 hover:bg-black/70 transition-colors"
+            >
+              <div className="text-[10px] tracking-[0.5em] uppercase text-white/50 mb-3">Pack</div>
+              <h3 className="font-serif text-xl text-white mb-3">{p.title}</h3>
+              <div className="font-serif text-3xl mb-4 italic font-light">{p.price}</div>
+              <p className="text-sm text-white/70 leading-relaxed">{p.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 md:px-10 pb-24">
-        <SectionHeading no="02" en="Price List" jp="料金一覧" />
-        <div className="overflow-x-auto border border-black/10">
-          <table className="w-full text-sm bg-white min-w-[560px]">
+      <section className="max-w-6xl mx-auto px-6 md:px-12 pb-24">
+        <SectionHeading no="II" en="Price List" jp="料金一覧" />
+        <div className="overflow-x-auto border border-white/10 bg-black/40 backdrop-blur-sm">
+          <table className="w-full text-sm min-w-[560px]">
             <thead>
-              <tr className="bg-[#003366] text-white text-left text-[10px] tracking-[0.3em] uppercase">
+              <tr className="border-b border-white/10 text-left text-[10px] tracking-[0.4em] uppercase text-white/60">
                 <th className="px-5 py-4">券種</th>
                 <th className="px-5 py-4 text-right">大人</th>
                 <th className="px-5 py-4 text-right">シニア</th>
@@ -269,17 +280,17 @@ export function PricePage() {
             </thead>
             <tbody>
               {PRICES.map((row, i) => (
-                <tr key={row.type} className={i % 2 ? "bg-[#f7f6f2]" : ""}>
-                  <td className="px-5 py-4 font-medium">{row.type}</td>
-                  <td className="px-5 py-4 text-right font-serif">{row.adult}</td>
-                  <td className="px-5 py-4 text-right font-serif text-[#444]">{row.senior}</td>
-                  <td className="px-5 py-4 text-right font-serif text-[#444]">{row.child}</td>
+                <tr key={row.type} className={`border-b border-white/5 ${i % 2 ? "bg-white/[0.02]" : ""}`}>
+                  <td className="px-5 py-4 text-white/90">{row.type}</td>
+                  <td className="px-5 py-4 text-right font-serif text-white">{row.adult}</td>
+                  <td className="px-5 py-4 text-right font-serif text-white/70">{row.senior}</td>
+                  <td className="px-5 py-4 text-right font-serif text-white/70">{row.child}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="mt-4 text-xs text-[#888]">
+        <p className="mt-4 text-xs text-white/50">
           ※ シニアは60歳以上、小人は小学生以下。価格はすべて税込みです。
         </p>
       </section>
@@ -288,7 +299,7 @@ export function PricePage() {
 }
 
 /* ============================================================
- *  /foods  — お食事ページ
+ *  /foods
  * ============================================================ */
 
 const SHOPS = [
@@ -326,27 +337,29 @@ const SHOPS = [
   },
 ];
 
+const ROMAN = ["I", "II", "III", "IV", "V"];
+
 export function FoodsPage() {
   return (
     <AkakuraShell
-      eyebrow="IV — Restaurants"
-      title={<>滑って、食べて、<br />また滑る。</>}
+      eyebrow="IV · Restaurants"
+      title={<>滑って、食べて、<br /><span className="italic font-light">また</span>滑る。</>}
       lead="ゲレンデ内3つの食事処。山形の郷土料理から焼きたてパンまで、一日中おいしいスキー場を。"
     >
-      <section className="max-w-6xl mx-auto px-6 md:px-10 py-20 space-y-24">
+      <section className="max-w-6xl mx-auto px-6 md:px-12 pb-24 space-y-20">
         {SHOPS.map((s, i) => (
           <div key={s.name}>
-            <SectionHeading no={String(i + 1).padStart(2, "0")} en={s.tagline} jp={s.name} />
+            <SectionHeading no={ROMAN[i]} en={s.tagline} jp={s.name} />
             <div className="grid md:grid-cols-12 gap-10 items-start">
-              <div className="md:col-span-5 text-[#444] leading-loose text-sm">
+              <div className="md:col-span-5 text-white/70 leading-loose text-sm">
                 <p>{s.desc}</p>
               </div>
               <div className="md:col-span-6 md:col-start-7">
-                <ul className="divide-y divide-black/10 border-y border-black/10">
+                <ul className="divide-y divide-white/10 border-y border-white/10">
                   {s.menu.map(([item, price]) => (
                     <li key={item} className="flex items-center justify-between py-4">
-                      <span className="text-[#1a1a1a]">{item}</span>
-                      <span className="font-serif text-lg text-[#003366]">{price}</span>
+                      <span className="text-white/90">{item}</span>
+                      <span className="font-serif text-lg text-white italic font-light">{price}</span>
                     </li>
                   ))}
                 </ul>
@@ -360,7 +373,7 @@ export function FoodsPage() {
 }
 
 /* ============================================================
- *  /access  — アクセスページ
+ *  /access
  * ============================================================ */
 
 const ROUTES = [
@@ -393,39 +406,39 @@ const ROUTES = [
 export function AccessPage() {
   return (
     <AkakuraShell
-      eyebrow="V — Access"
-      title={<>山形・最上町、<br />温泉街のすぐとなり。</>}
+      eyebrow="V · Access"
+      title={<>山形・最上町、<br />温泉街の <span className="italic font-light">すぐとなり</span>。</>}
       lead="温泉街からそのまま続くゲレンデ。車でも電車でもアクセスしやすい、東北のスノーフィールドです。"
     >
-      <section className="max-w-6xl mx-auto px-6 md:px-10 py-20">
-        <SectionHeading no="01" en="Map" jp="所在地" />
-        <div className="border border-black/10 overflow-hidden">
+      <section className="max-w-6xl mx-auto px-6 md:px-12 pb-20">
+        <SectionHeading no="I" en="Map" jp="所在地" />
+        <div className="border border-white/10 overflow-hidden bg-black/40">
           <iframe
             title="赤倉温泉スキー場 地図"
             src="https://www.openstreetmap.org/export/embed.html?bbox=140.43%2C38.76%2C140.49%2C38.80&layer=mapnik"
-            className="w-full h-[420px]"
+            className="w-full h-[420px] grayscale contrast-125 opacity-90"
             loading="lazy"
           />
         </div>
-        <div className="mt-6 text-sm text-[#444]">
+        <div className="mt-6 text-sm text-white/70">
           〒999-6101 山形県最上郡最上町大字富澤<br />
           Tel. 0233-00-0000 / Fax. 0233-00-0001
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 md:px-10 pb-24">
-        <SectionHeading no="02" en="Route Info" jp="ルート案内" />
-        <div className="grid md:grid-cols-3 gap-6">
+      <section className="max-w-6xl mx-auto px-6 md:px-12 pb-24">
+        <SectionHeading no="II" en="Route Info" jp="ルート案内" />
+        <div className="grid md:grid-cols-3 gap-px bg-white/10 border border-white/10">
           {ROUTES.map((r, i) => (
-            <div key={r.from} className="border-t-2 border-[#cc0000] bg-white p-6">
-              <div className="text-[10px] tracking-[0.4em] uppercase text-[#888] mb-2">
-                Route {i + 1}
+            <div key={r.from} className="bg-black/50 backdrop-blur-sm p-6 hover:bg-black/70 transition-colors">
+              <div className="text-[10px] tracking-[0.5em] uppercase text-white/50 mb-2">
+                Route {ROMAN[i]}
               </div>
-              <h3 className="font-serif text-xl text-[#003366] mb-4">{r.from}</h3>
-              <ul className="space-y-2 text-sm text-[#444] leading-relaxed">
+              <h3 className="font-serif text-xl text-white mb-4">{r.from}</h3>
+              <ul className="space-y-2 text-sm text-white/70 leading-relaxed">
                 {r.items.map((it) => (
                   <li key={it} className="flex gap-2">
-                    <span className="text-[#cc0000]">→</span>
+                    <span className="text-white/40">→</span>
                     <span>{it}</span>
                   </li>
                 ))}
@@ -439,7 +452,7 @@ export function AccessPage() {
 }
 
 /* ============================================================
- *  /news  — お知らせ
+ *  /news
  * ============================================================ */
 
 const NEWS = [
@@ -454,25 +467,25 @@ const NEWS = [
 export function NewsPage() {
   return (
     <AkakuraShell
-      eyebrow="I — News"
-      title={<>お知らせ。</>}
+      eyebrow="I · News"
+      title={<><span className="italic font-light">お知らせ</span>。</>}
       lead="営業情報・イベント・ゲレンデコンディションなど、赤倉からの最新のお知らせ。"
     >
-      <section className="max-w-4xl mx-auto px-6 md:px-10 py-20">
-        <ul className="divide-y divide-black/10 border-y border-black/10">
+      <section className="max-w-4xl mx-auto px-6 md:px-12 pb-24">
+        <ul className="divide-y divide-white/10 border-y border-white/10">
           {NEWS.map((n) => (
-            <li key={n.title} className="py-8 grid md:grid-cols-12 gap-4">
+            <li key={n.title} className="py-8 grid md:grid-cols-12 gap-4 hover:bg-white/[0.02] transition-colors px-2">
               <div className="md:col-span-3 flex md:flex-col gap-3 md:gap-2 items-baseline md:items-start">
-                <time className="font-serif text-lg text-[#003366]">{n.date}</time>
-                <span className="inline-block text-[10px] tracking-[0.3em] uppercase bg-[#003366] text-white px-2 py-1">
+                <time className="font-serif text-lg text-white italic font-light">{n.date}</time>
+                <span className="inline-block text-[10px] tracking-[0.4em] uppercase border border-white/30 text-white/70 px-2 py-1">
                   {n.tag}
                 </span>
               </div>
               <div className="md:col-span-9">
-                <h3 className="font-serif text-xl md:text-2xl text-[#1a1a1a] mb-2 hover:text-[#cc0000] transition-colors cursor-pointer">
+                <h3 className="font-serif text-xl md:text-2xl text-white mb-2 hover:text-white/70 transition-colors cursor-pointer">
                   {n.title}
                 </h3>
-                <p className="text-sm text-[#555] leading-loose">{n.body}</p>
+                <p className="text-sm text-white/65 leading-loose">{n.body}</p>
               </div>
             </li>
           ))}
