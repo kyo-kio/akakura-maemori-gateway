@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import maemoriHero from "@/assets/maemori-hero.jpg";
 import maemoriHorses from "@/assets/maemori-horses.jpg";

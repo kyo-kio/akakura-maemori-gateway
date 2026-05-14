@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { useState, type ReactNode } from "react";
 import akakuraHero from "@/assets/akakura-hero.jpg";
 
@@ -52,7 +52,7 @@ function AkakuraShell({
             <Link
               key={n.label}
               to={n.to}
-              activeProps={{ className: "text-white" }}
+              
               className="text-white/70 hover:text-white transition-colors"
             >
               {n.label}
