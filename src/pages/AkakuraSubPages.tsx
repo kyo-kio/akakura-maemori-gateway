@@ -52,7 +52,7 @@ function AkakuraShell({
             <Link
               key={n.label}
               to={n.to}
-              activeProps={{ className: "text-white" }}
+              
               className="text-white/70 hover:text-white transition-colors"
             >
               {n.label}
