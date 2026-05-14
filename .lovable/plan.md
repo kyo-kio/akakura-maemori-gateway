@@ -1,33 +1,40 @@
 ## ゴール
-3ページ（選択 / 前森高原 / 赤倉温泉スキー場）の実装を1つのファイルにまとめる。
+GitHub Pages（静的ホスティング）で動くサイトに作り変える。ページの見た目・内容・URLは変えない。
+
+## 現状の問題
+このプロジェクトは TanStack Start（SSR フレームワーク、Cloudflare Workers 前提）で動いており、`index.html` も無く、`src/server.ts` 経由でサーバー実行されるため GitHub Pages では動きません。
 
 ## 方針
-TanStack Start のファイルベースルーティングの制約上、`src/routes/index.tsx`・`maemori.tsx`・`akakura.tsx` の3ファイルは存在し続ける必要がある（削除するとビルドが壊れる）。
-そこで以下の構成にする：
+**TanStack Start を外して、純粋な Vite + React SPA に作り変える。** ページコンポーネント本体（`src/pages/MogamiPages.tsx`、`src/pages/AkakuraSubPages.tsx`、`src/components/*`、`src/styles.css`、`src/assets/*`）は無傷で再利用する。書き換えるのはルーティング層と入口だけ。
 
-- 新規ファイル `src/pages/MogamiPages.tsx` を作成し、ここに **3ページ分のコンポーネントとデータをすべて集約**：
-  - `SelectPage`（現 index.tsx の中身）
-  - `MaemoriPage`（現 maemori.tsx の中身）
-  - `AkakuraPage`（現 akakura.tsx の中身）
-  - 共通の型 `Lang`、翻訳テキスト `copy`、共通定数（NAV など）も同ファイル内に集約
-  - 画像 import（`maemori-hero` / `akakura-hero` など）も1箇所にまとめる
+## 変更内容
 
-- 既存のルートファイルは「薄いエントリ」に置き換え、`head()` メタ情報のみ保持してコンポーネントを import：
-  ```tsx
-  // src/routes/index.tsx
-  import { createFileRoute } from "@tanstack/react-router";
-  import { SelectPage } from "@/pages/MogamiPages";
-  export const Route = createFileRoute("/")({
-    head: () => ({ meta: [...] }),
-    component: SelectPage,
-  });
-  ```
-  `maemori.tsx` / `akakura.tsx` も同じパターン。
+### 1. ルーティングを React Router に置き換え
+- `react-router-dom` を追加。`@tanstack/react-router` / `@tanstack/react-start` 関連を削除。
+- `src/pages/MogamiPages.tsx` と `src/pages/AkakuraSubPages.tsx` 内の `import { Link } from "@tanstack/react-router"` を `react-router-dom` の `Link` に置換し、`to="/akakura"` 等のリテラル文字列はそのまま使える。
+- `src/routes/*.tsx` と `src/routeTree.gen.ts`、`src/router.tsx` を削除。
 
-## 結果
-- 実装本体（UI・テキスト・ロジック）は **`src/pages/MogamiPages.tsx` 1ファイルに完全集約**
-- ルートファイルは各5〜10行のエントリのみ（ルーター要件を満たすため残す）
-- 既存の挙動・URL・SEO メタは変更なし
+### 2. SPA 入口を新設
+- `index.html`（プロジェクトルート）を作成
+- `src/main.tsx` を新設：`BrowserRouter` ではなく **`HashRouter`** を使う（GitHub Pages のサブパスでもリロード/直リンクが 404 にならないため）
+- `<Routes>` で `/`, `/maemori`, `/akakura`, `/news`, `/slope`, `/price`, `/foods`, `/access` の8ルートを登録
 
-## 確認事項
-この方針で進めてよろしいですか？（ルートファイル3つは消せませんが、中身は1ファイルに統合されます）
+### 3. Vite 設定の刷新
+- `vite.config.ts` を `@vitejs/plugin-react` + `@tailwindcss/vite` のみのシンプル構成に置き換え
+- `base: "./"` を設定（任意のリポジトリ名に対応）
+- `src/server.ts` / `src/start.ts` / `wrangler.jsonc` を削除
+
+### 4. GitHub Pages デプロイ設定
+- `.github/workflows/deploy.yml` を追加：push 時に `npm run build` → `dist/` を Pages にデプロイ
+- `dist/404.html` を `index.html` のコピーとして出力するスクリプトを追加（HashRouter なので必須ではないが念のため）
+
+## 影響しないもの
+- 各ページの見た目・テキスト・画像・動画
+- すべてのページの URL パス
+- レスポンシブ対応・配色
+
+## 制限事項
+- SSR が無くなるため、各ページの個別 `<title>` / OGP メタは初回 HTML には入らなくなります（クライアント側で動的に設定する形になり、SNS シェア時のサムネイルやタイトル取得は弱くなります）。SEO/シェアを重視するなら GitHub Pages ではなく Cloudflare Pages や Vercel の方が向いています。
+- `https://maemori.jp/` への外部リンクなど、外部遷移は影響なし。
+
+進めてよろしいですか？
